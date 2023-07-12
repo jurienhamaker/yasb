@@ -5,6 +5,7 @@ from core.config import get_config_and_stylesheet
 from core.log import init_logger
 from core.tray import TrayIcon
 from core.watcher import create_observer
+import os
 
 
 def main():
@@ -27,6 +28,9 @@ def main():
         observer.start()
     else:
         observer = None
+
+    with open('pid.txt', 'w') as f:
+        f.write(str(os.getpid()))
 
     # Start Application
     exit_status = app.exec()
