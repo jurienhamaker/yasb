@@ -29,8 +29,9 @@ def main():
     else:
         observer = None
 
-    with open('pid.txt', 'w') as f:
-        f.write("\n" + str(os.getpid()))
+    if config['write_pid']:
+        with open('yasb_pid.txt', 'w') as f:
+            f.write("\n" + str(os.getpid()))
 
     # Start Application
     exit_status = app.exec()
