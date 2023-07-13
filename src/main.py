@@ -30,7 +30,7 @@ def main():
         observer = None
 
     with open('pid.txt', 'w') as f:
-        f.write(str(os.getpid()))
+        f.write("\n" + str(os.getpid()))
 
     # Start Application
     exit_status = app.exec()
