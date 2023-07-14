@@ -76,7 +76,7 @@ class CustomWidget(BaseWidget):
         try:
             active_label.setText(self._truncate_label(active_label_content.format(data=self._exec_data)))
         except Exception:
-            active_label.setText(self._truncate_label(active_label_content))
+            active_label.setText(self._truncate_label("Unavailable"))
 
     def _exec_callback(self):
         self._exec_data = None

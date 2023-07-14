@@ -1,6 +1,6 @@
 import logging
 from settings import APP_BAR_TITLE
-from PyQt6.QtWidgets import QApplication, QWidget, QHBoxLayout, QGridLayout, QFrame
+from PyQt6.QtWidgets import QApplication, QWidget, QHBoxLayout, QGridLayout, QFrame, QSizePolicy
 from PyQt6.QtGui import QScreen
 from PyQt6.QtCore import Qt, QRect
 from core.utils.utilities import is_valid_percentage_str, percent_to_float
@@ -142,30 +142,29 @@ class Bar(QWidget):
         self.try_add_app_bar(scale_screen_height=not should_downscale_screen_geometry)
 
     def _add_widgets(self, widgets: dict[str, list] = None):
-        bar_layout = QGridLayout()
-        bar_layout.setContentsMargins(0, 0, 0, 0)
-        bar_layout.setSpacing(0)
+        main_layout = QHBoxLayout()
+        main_layout.setContentsMargins(0, 0, 0, 0)
 
-        for column_num, layout_type in enumerate(['left', 'center', 'right']):
-            layout = QHBoxLayout()
-            layout.setContentsMargins(0, 0, 0, 0)
-            layout.setSpacing(0)
-            layout_container = QFrame()
-            layout_container.setProperty("class", f"container container-{layout_type}")
+        for layout_type in ['left', 'center', 'right']:
+            widget_layout = QHBoxLayout()
+            widget_layout.setContentsMargins(0, 0, 0, 0)
 
-            if layout_type in ["center", "right"]:
-                layout.addStretch()
+            if layout_type in ['center', 'right']:
+                widget_layout.addStretch(1)
 
             for widget in widgets[layout_type]:
                 widget.setFixedHeight(self._bar_frame.geometry().height())
                 widget.parent_layout_type = layout_type
                 widget.bar_id = self.bar_id
-                layout.addWidget(widget, 0)
+                widget_layout.addWidget(widget)
 
-            if layout_type in ["left", "center"]:
-                layout.addStretch()
+            if layout_type in ['left', 'center']:
+                widget_layout.addStretch(1)
 
-            layout_container.setLayout(layout)
-            bar_layout.addWidget(layout_container, 0, column_num)
+            container = QWidget()
+            container.setLayout(widget_layout)
+            container.setProperty("class", f"container container-{layout_type}")
 
-        self._bar_frame.setLayout(bar_layout)
+            main_layout.addWidget(container, stretch=(0 if layout_type == 'center' else 1))
+
+        self._bar_frame.setLayout(main_layout)
