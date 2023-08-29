@@ -81,6 +81,7 @@ class WorkspaceWidget(BaseWidget):
             KomorebiEvent.CycleFocusMonitor.value,
             KomorebiEvent.FocusMonitorWorkspaceNumber.value,
             KomorebiEvent.FocusMonitorNumber.value,
+            KomorebiEvent.FocusNamedWorkspace.value,
             KomorebiEvent.FocusWorkspaceNumber.value
         ]
 
